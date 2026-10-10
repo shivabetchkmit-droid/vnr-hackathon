@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bg-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a" />
+      <stop offset="100%" stop-color="#022c22" />
+    </linearGradient>
+    <linearGradient id="accent-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#10b981" />
+      <stop offset="50%" stop-color="#06b6d4" />
+      <stop offset="100%" stop-color="#3b82f6" />
+    </linearGradient>
+    <linearGradient id="shield-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#34d399" />
+      <stop offset="100%" stop-color="#059669" />
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="12" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <!-- Rounded App Icon Background -->
+  <rect width="512" height="512" rx="112" fill="url(#bg-grad)" stroke="#10b981" stroke-width="6" stroke-opacity="0.3" />
+
+  <!-- Background subtle neural pattern -->
+  <circle cx="256" cy="256" r="160" fill="none" stroke="#059669" stroke-width="1.5" stroke-opacity="0.2" stroke-dasharray="8 8" />
+  <circle cx="256" cy="256" r="110" fill="none" stroke="#10b981" stroke-width="1" stroke-opacity="0.2" />
+
+  <!-- Outer Hexagonal / Shield Core -->
+  <path d="M 256 90 L 390 155 L 390 305 Q 390 395 256 440 Q 122 395 122 305 L 122 155 Z" 
+        fill="#111827" fill-opacity="0.8" stroke="url(#accent-grad)" stroke-width="14" stroke-linejoin="round" />
+
+  <!-- Shield Inner Accent -->
+  <path d="M 256 122 L 362 175 L 362 295 Q 362 368 256 408 Q 150 368 150 295 L 150 175 Z" 
+        fill="url(#accent-grad)" fill-opacity="0.12" />
+
+  <!-- Central "SNV" Stylized Monogram Nexus & Brain Nodes -->
+  <g filter="url(#glow)">
+    <!-- Central AI Node Core -->
+    <circle cx="256" cy="245" r="28" fill="url(#accent-grad)" />
+    
+    <!-- Top Node -->
+    <circle cx="256" cy="170" r="14" fill="#34d399" />
+    <line x1="256" y1="184" x2="256" y2="217" stroke="#34d399" stroke-width="5" stroke-linecap="round" />
+    
+    <!-- Bottom Left Node -->
+    <circle cx="196" cy="320" r="15" fill="#06b6d4" />
+    <line x1="240" y1="262" x2="207" y2="307" stroke="#06b6d4" stroke-width="5" stroke-linecap="round" />
+    
+    <!-- Bottom Right Node -->
+    <circle cx="316" cy="320" r="15" fill="#3b82f6" />
+    <line x1="272" y1="262" x2="305" y2="307" stroke="#3b82f6" stroke-width="5" stroke-linecap="round" />
+    
+    <!-- Left Wing Node -->
+    <circle cx="180" cy="220" r="11" fill="#10b981" />
+    <line x1="191" y1="225" x2="230" y2="238" stroke="#10b981" stroke-width="4" stroke-linecap="round" />
+    
+    <!-- Right Wing Node -->
+    <circle cx="332" cy="220" r="11" fill="#60a5fa" />
+    <line x1="321" y1="225" x2="282" y2="238" stroke="#60a5fa" stroke-width="4" stroke-linecap="round" />
+  </g>
+
+  <!-- Clean lock / local privacy indicator emblem -->
+  <path d="M 244 350 L 268 350 A 6 6 0 0 1 274 356 L 274 372 A 6 6 0 0 1 268 378 L 244 378 A 6 6 0 0 1 238 372 L 238 356 A 6 6 0 0 1 244 350 Z" fill="#10b981" />
+  <path d="M 246 350 L 246 342 A 10 10 0 0 1 266 342 L 266 350" fill="none" stroke="#10b981" stroke-width="4" stroke-linecap="round" />
+</svg>

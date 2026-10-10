@@ -1,0 +1,54 @@
+# Dependencies
+node_modules/
+
+# Production Builds & Packaging
+dist/
+dist-electron/
+dist-package/
+release/
+build/
+*.exe
+
+# Large Binaries & Zip Archives
+assets/bin/
+*.zip
+*.tar
+*.gz
+*.7z
+
+# Local Database & Dynamic Files
+*.db
+*.sqlite
+*.sqlite3
+snv_ai.db
+
+# Models & Weights
+*.safetensors
+*.ckpt
+*.gguf
+*.bin
+*.pth
+*.onnx
+
+# Cache & Temporary Files
+.cache/
+*.log
+*.tmp
+temp/
+tmp/
+output/
+scratch/
+test_output.png
+test_robot.png
+
+# Environment & Local Configuration
+.env
+.env.local
+.DS_Store
+Thumbs.db
+
+# IDE & Editor settings
+.vscode/
+.idea/
+*.suo
+*.user

@@ -1,0 +1,30 @@
+# Probability & Statistics - Core Mathematical Principles
+
+## 1. Bayes' Theorem
+Bayes' theorem calculates the conditional probability of an event based on prior knowledge of conditions related to the event:
+
+Formula:
+P(A|B) = [ P(B|A) * P(A) ] / P(B)
+
+Where:
+- P(A|B) is the Posterior Probability: probability of event A given evidence B.
+- P(B|A) is the Likelihood: probability of evidence B given event A is true.
+- P(A) is the Prior Probability: initial probability of event A before seeing evidence B.
+- P(B) is the Marginal Probability: total probability of observing evidence B across all possibilities:
+  P(B) = P(B|A)*P(A) + P(B|not A)*P(not A)
+
+### Intuitive Example (Medical Diagnosis)
+Suppose a disease affects 1% of the population: P(D) = 0.01.
+A diagnostic test has:
+- Sensitivity (True Positive rate): P(+|D) = 0.95
+- False Positive rate: P(+|not D) = 0.05
+
+If a randomly selected patient tests positive, what is the probability they actually have the disease?
+P(+) = (0.95 * 0.01) + (0.05 * 0.99) = 0.0095 + 0.0495 = 0.0590
+P(D|+) = (0.95 * 0.01) / 0.0590 = 0.0095 / 0.0590 ≈ 16.1%
+
+Even though the test is 95% accurate, the posterior probability is only ~16% due to the low base rate.
+
+## 2. Law of Total Probability
+For mutually exclusive events A1, A2, ..., An that partition the sample space:
+P(B) = ∑ [ P(B|Ai) * P(Ai) ] for all i from 1 to n.

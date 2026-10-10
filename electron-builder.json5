@@ -1,0 +1,47 @@
+{
+  "$schema": "https://raw.githubusercontent.com/electron-userland/electron-builder/master/packages/app-builder-lib/scheme.json",
+  "appId": "com.snvai.desktop",
+  "productName": "SNV AI",
+  "copyright": "Copyright © 2026 SNV AI",
+  "directories": {
+    "output": "dist-package",
+    "buildResources": "assets"
+  },
+  "files": [
+    "dist/**/*",
+    "dist-electron/**/*",
+    "assets/icon.png",
+    "assets/icon.ico",
+    "node_modules/sql.js/dist/sql-wasm.wasm",
+    "node_modules/sql.js/dist/sql-wasm.js",
+    "node_modules/pdf-parse/**/*",
+    "node_modules/mammoth/**/*"
+  ],
+  "extraResources": [
+    {
+      "from": "assets/bin/sd",
+      "to": "bin/sd",
+      "filter": ["**/*"]
+    }
+  ],
+  "win": {
+    "target": [
+      {
+        "target": "nsis",
+        "arch": ["x64"]
+      }
+    ],
+    "icon": "assets/icon.ico",
+    "artifactName": "SNV-AI-Setup.exe"
+  },
+  "nsis": {
+    "oneClick": false,
+    "allowToChangeInstallationDirectory": true,
+    "createDesktopShortcut": "always",
+    "createStartMenuShortcut": true,
+    "shortcutName": "SNV AI",
+    "installerIcon": "assets/icon.ico",
+    "uninstallerIcon": "assets/icon.ico",
+    "runAfterFinish": true
+  }
+}
