@@ -46,6 +46,8 @@ export class ImageGenService {
   private comfyHost = '127.0.0.1';
   private isStartingEngine = false;
 
+  private comfyPythonwPath =
+    'C:\\Users\\HP\\AppData\\Local\\Comfy-Desktop\\ComfyUI-Installs\\shiva\\ComfyUI\\.venv\\Scripts\\pythonw.exe';
   private comfyPythonPath =
     'C:\\Users\\HP\\AppData\\Local\\Comfy-Desktop\\ComfyUI-Installs\\shiva\\ComfyUI\\.venv\\Scripts\\python.exe';
   private comfyWorkingDir =
@@ -77,10 +79,19 @@ export class ImageGenService {
     }
   }
 
+  // Get python executable - prefers pythonw.exe to completely prevent CMD window from popping up
+  public getPythonExecutable(): string {
+    if (fs.existsSync(this.comfyPythonwPath)) {
+      return this.comfyPythonwPath;
+    }
+    return this.comfyPythonPath;
+  }
+
   // Check if local image generation backend runtime is found
   public findSdCliBinary(): string | null {
-    if (fs.existsSync(this.comfyPythonPath)) {
-      return this.comfyPythonPath;
+    const exe = this.getPythonExecutable();
+    if (fs.existsSync(exe)) {
+      return exe;
     }
     return null;
   }
@@ -109,14 +120,14 @@ export class ImageGenService {
     });
   }
 
-  // Ensure ComfyUI backend is up and running
-  public async ensureRunning(): Promise<boolean> {
+  // Ensure ComfyUI backend is up and running silently in background
+  public async ensureRunning(onStatusUpdate?: (status: string) => void): Promise<boolean> {
     const isUp = await this.pingComfy();
     if (isUp) return true;
 
     if (this.isStartingEngine) {
-      for (let i = 0; i < 30; i++) {
-        await new Promise((r) => setTimeout(r, 500));
+      for (let i = 0; i < 70; i++) {
+        await new Promise((r) => setTimeout(r, 1000));
         if (await this.pingComfy()) return true;
       }
       return false;
@@ -124,8 +135,10 @@ export class ImageGenService {
 
     this.isStartingEngine = true;
     try {
-      if (fs.existsSync(this.comfyPythonPath)) {
-        console.log(`Auto-starting local ComfyUI SDXL backend: ${this.comfyPythonPath}`);
+      const pythonExe = this.getPythonExecutable();
+      if (fs.existsSync(pythonExe)) {
+        console.log(`Auto-starting local ComfyUI SDXL backend silently: ${pythonExe}`);
+        onStatusUpdate?.('Initializing local SDXL engine on GPU...');
         const args = [
           '-s',
           'ComfyUI\\main.py',
@@ -137,7 +150,8 @@ export class ImageGenService {
           this.comfyOutputDir
         ];
 
-        const child = spawn(this.comfyPythonPath, args, {
+        // Using pythonw.exe + windowsHide: true ensures NO console or CMD window is created
+        const child = spawn(pythonExe, args, {
           cwd: this.comfyWorkingDir,
           detached: true,
           stdio: 'ignore',
@@ -145,15 +159,18 @@ export class ImageGenService {
         });
         child.unref();
 
-        for (let i = 0; i < 25; i++) {
+        for (let i = 0; i < 70; i++) {
           await new Promise((r) => setTimeout(r, 1000));
           if (await this.pingComfy()) {
             console.log('Local ComfyUI SDXL backend successfully started and listening on 8188');
             return true;
           }
+          if (i > 0 && i % 5 === 0) {
+            onStatusUpdate?.(`Initializing local SDXL engine on GPU (${i}s)...`);
+          }
         }
       } else {
-        console.warn('ComfyUI Python runtime not found at:', this.comfyPythonPath);
+        console.warn('ComfyUI Python runtime not found at:', pythonExe);
       }
     } catch (err) {
       console.error('Failed to spawn local ComfyUI service:', err);
@@ -213,7 +230,7 @@ export class ImageGenService {
     onDone: (record: GeneratedImageRecord) => void,
     onError: (error: string) => void
   ): Promise<void> {
-    const isReady = await this.ensureRunning();
+    const isReady = await this.ensureRunning((status) => onProgress(status));
     if (!isReady) {
       onError('Local SDXL ComfyUI service is not responding. Please make sure ComfyUI is installed and running.');
       return;
@@ -393,7 +410,7 @@ export class ImageGenService {
     onDone: (record: GeneratedImageRecord) => void,
     onError: (error: string) => void
   ): Promise<void> {
-    const isReady = await this.ensureRunning();
+    const isReady = await this.ensureRunning((status) => onProgress(status));
     if (!isReady) {
       onError('Local SDXL ComfyUI service is not responding.');
       return;
